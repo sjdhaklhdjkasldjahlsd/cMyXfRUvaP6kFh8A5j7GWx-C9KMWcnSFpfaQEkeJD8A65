@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Lines Animation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* TOS Link Styling */
+        .tos-link {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            z-index: 2;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .tos-link:hover {
+            color: rgba(255, 255, 255, 1);
+        }
+
+        .container {
+            max-width: 600px;
+            padding: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 28px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: 0.3s ease-in-out;
+            margin-bottom: 12px;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .line {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- TOS Link -->
+    <a href="YOUR_TOS_LINK" class="tos-link" target="_blank">Terms of Service</a>
+
+    <div class="container">
+        <h1>Join Our Community</h1>
+        <p>Stay connected with like-minded people.</p>
+
+        <a href="YOUR_DISCORD_INVITE_LINK" class="btn">Join Discord</a>
+        <a href="YOUR_TELEGRAM_INVITE_LINK" class="btn">Join Telegram</a>
+        <a href="YOUR_SELLAUTH_LINK" class="btn">Visit Sellauth</a>
+    </div>
+
+    <script>
+        const body = document.body;
+        let lines = [];
+        let mouseX = 0;
+        let mouseY = 0;
+
+        // Track mouse position
+        body.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+
+            // Create lines connecting mouse position to random spots
+            for (let i = 0; i < 10; i++) {
+                createLine(mouseX, mouseY);
+            }
+        });
+
+        // Function to create and animate a line
+        function createLine(x, y) {
+            const line = document.createElement('div');
+            line.classList.add('line');
+            line.style.left = `${x}px`;
+            line.style.top = `${y}px`;
+            body.appendChild(line);
+
+            // Get random positions for lines to animate to
+            const randomX = Math.random() * window.innerWidth;
+            const randomY = Math.random() * window.innerHeight;
+
+            // Animate the lines to "run away" from the mouse
+            line.animate(
+                [
+                    { transform: `translate(0, 0)` },
+                    { transform: `translate(${randomX - x}px, ${randomY - y}px)` }
+                ],
+                {
+                    duration: 2000,
+                    easing: 'ease-out',
+                    fill: 'forwards',
+                    iterations: 1
+                }
+            );
+
+            // Remove line after animation
+            setTimeout(() => {
+                line.remove();
+            }, 2000);
+        }
+
+    </script>
+</body>
+</html>
